@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Calculator</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- PyScript -->
+    <link rel="stylesheet"
+          href="https://pyscript.net/releases/2025.3.1/core.css">
+    <script type="module"
+            src="https://pyscript.net/releases/2025.3.1/core.js"></script>
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<header class="navbar">
+    <div class="logo">🐍 Python Calculator</div>
+    <nav>
+        <a href="index.html">Home</a>
+    </nav>
+</header>
+<div class="calculator-container">
+    <div class="calculator">
+        <h2>Kalkulator Python</h2>
+        <input
+            type="text"
+            id="display"
+            readonly
+            placeholder="0">
+        <div class="buttons">
+            <button py-click="clear_display()">C</button>
+            <button py-click="delete_last()">DEL</button>
+            <button py-click="append('%')">%</button>
+            <button class="operator" py-click="append('/')">÷</button>
+
+            <button py-click="append('7')">7</button>
+            <button py-click="append('8')">8</button>
+            <button py-click="append('9')">9</button>
+            <button class="operator" py-click="append('*')">×</button>
+
+            <button py-click="append('4')">4</button>
+            <button py-click="append('5')">5</button>
+            <button py-click="append('6')">6</button>
+            <button class="operator" py-click="append('-')">−</button>
+
+            <button py-click="append('1')">1</button>
+            <button py-click="append('2')">2</button>
+            <button py-click="append('3')">3</button>
+            <button class="operator" py-click="append('+')">+</button>
+
+            <button py-click="append('0')">0</button>
+            <button py-click="append('.')">.</button>
+
+            <button class="equal"
+                    style="grid-column: span 2;"
+                    py-click="calculate()">
+                =
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Memanggil file Python -->
+<py-script src="script.py"></py-script>
+
+</body>
+</html>
