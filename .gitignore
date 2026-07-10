@@ -1,0 +1,19 @@
+# File Python sementara
+__pycache__/
+*.pyc
+
+# Virtual environment Python
+venv/
+env/
+
+# File sistem
+.DS_Store
+Thumbs.db
+
+# Setting editor
+.vscode/
+.idea/
+
+# File sementara
+*.log
+*.tmp
