@@ -31,32 +31,32 @@
             readonly
             placeholder="0">
         <div class="buttons">
-            <button py-click="clear_display()">C</button>
-            <button py-click="delete_last()">DEL</button>
-            <button py-click="append('%')">%</button>
-            <button class="operator" py-click="append('/')">÷</button>
+            <button onclick="clear_display()">C</button>
+            <button onclick="delete_last()">DEL</button>
+            <button onclick="append('%')">%</button>
+            <button class="operator" onclick="append('/')">÷</button>
 
-            <button py-click="append('7')">7</button>
-            <button py-click="append('8')">8</button>
-            <button py-click="append('9')">9</button>
-            <button class="operator" py-click="append('*')">×</button>
+            <button onclick="append('7')">7</button>
+            <button onclick="append('8')">8</button>
+            <button onclick="append('9')">9</button>
+            <button class="operator" onclick="append('*')">×</button>
 
-            <button py-click="append('4')">4</button>
-            <button py-click="append('5')">5</button>
-            <button py-click="append('6')">6</button>
-            <button class="operator" py-click="append('-')">−</button>
+            <button onclick="append('4')">4</button>
+            <button onclick="append('5')">5</button>
+            <button onclick="append('6')">6</button>
+            <button class="operator" onclick="append('-')">−</button>
 
-            <button py-click="append('1')">1</button>
-            <button py-click="append('2')">2</button>
-            <button py-click="append('3')">3</button>
-            <button class="operator" py-click="append('+')">+</button>
+            <button onclick="append('1')">1</button>
+            <button onclick="append('2')">2</button>
+            <button onclick="append('3')">3</button>
+            <button class="operator" onclick="append('+')">+</button>
 
-            <button py-click="append('0')">0</button>
-            <button py-click="append('.')">.</button>
+            <button onclick="append('0')">0</button>
+            <button onclick="append('.')">.</button>
 
             <button class="equal"
                     style="grid-column: span 2;"
-                    py-click="calculate()">
+                    onclick="calculate()">
                 =
             </button>
         </div>
@@ -65,6 +65,7 @@
 
 <!-- Memanggil file Python -->
 <py-script src="script.py"></py-script>
+<!-- <script type="py" src="script.py"></script> -->
 
 </body>
 </html>
