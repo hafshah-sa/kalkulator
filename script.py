@@ -6,8 +6,11 @@ import re
 display = document.getElementById("display")
 
 OPERATORS = "+-*/%"
+ERROR_MESSAGES = ["Error", "Cannot divide by zero"]
 
 def append(value):
+    
+
     current = display.value
 
     # Operator pertama
@@ -44,39 +47,40 @@ def append(value):
 
     display.value += str(value)
 
-
 def clear_display():
     display.value = ""
-
 
 def delete_last():
     display.value = display.value[:-1]
 
-
 def calculate():
     expression = display.value.strip()
 
+    # Jika kosong
     if expression == "":
+        return
+
+    # Jika karakter terakhir adalah operator
+    if expression[-1] in OPERATORS:
         return
 
     try:
         expression = expression.replace("%", "/100")
         result = eval(expression)
 
+        # Hilangkan .0
         if isinstance(result, float) and result.is_integer():
             result = int(result)
 
         display.value = str(result)
 
     except ZeroDivisionError:
-        display.value = "Error: ÷0"
+        display.value = "Cannot divide by zero"
 
     except Exception:
         display.value = "Error"
 
-
 # ---------- expose ke JavaScript ----------
-
 window.append = create_proxy(append)
 window.clear_display = create_proxy(clear_display)
 window.delete_last = create_proxy(delete_last)
