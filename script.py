@@ -16,6 +16,12 @@ def append(value):
             display.value = "0" + value
             return
 
+    # Jika karakter terakhir operator,
+        # ganti operator sebelumnya
+        if current[-1] in OPERATORS:
+            display.value = current[:-1] + value
+            return
+
     # Handle decimal point
     if value == ".":
 
