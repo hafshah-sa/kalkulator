@@ -5,17 +5,24 @@ import re
 
 display = document.getElementById("display")
 
-OPERATORS = "+-*/%"
+OPERATORS = {"+", "-", "*", "/", "%"}
 ERROR_MESSAGES = ["Error", "Cannot divide by zero"]
 
 def append(value):
-    
+    # Jika display sedang menampilkan pesan error,
+    # mulai input baru
+    if display.value in ERROR_MESSAGES:
+        display.value = ""
 
     current = display.value
 
-    # Operator pertama
+    # Ambil angka terakhir sekali saja
+    last_number = re.split(r"[+\-*/%]", current)[-1] if current else ""
+
+    # Operator 
     if value in OPERATORS:
-        if current == "":
+        # Jika operator pertama
+        if not current:
             display.value = "0" + value
             return
 
@@ -29,7 +36,7 @@ def append(value):
     if value == ".":
 
         # Jika display kosong
-        if current == "":
+        if not current:
             display.value = "0."
             return
 
@@ -38,11 +45,26 @@ def append(value):
             display.value += "0."
             return
 
-        # Ambil angka terakhir setelah operator
-        last_number = re.split(r"[+\-*/%]", current)[-1]
-
         # Jika angka terakhir sudah punya titik
         if "." in last_number:
+            return
+
+    # Hindari angka nol di depan (leading zero)
+    if value.isdigit():
+
+        # Kasus: display hanya berisi "0"
+        if current == "0":
+            display.value = value
+            return
+
+        # Kasus: angka terakhir setelah operator adalah "0"
+        if last_number == "0":
+
+            last_operator = max(
+                current.rfind(op) for op in OPERATORS
+            )
+
+            display.value = current[:last_operator + 1] + value
             return
 
     display.value += str(value)
