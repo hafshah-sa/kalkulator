@@ -1,11 +1,35 @@
 from pyscript import document
 from pyscript.ffi import create_proxy
 from js import window
+import re
 
 display = document.getElementById("display")
+OPERATORS = "+-*/%"
 
 
 def append(value):
+    current = display.value
+
+    # Handle decimal point
+    if value == ".":
+
+        # Jika display kosong
+        if current == "":
+            display.value = "0."
+            return
+
+        # Jika karakter terakhir operator
+        if current[-1] in OPERATORS:
+            display.value += "0."
+            return
+
+        # Ambil angka terakhir setelah operator
+        last_number = re.split(r"[+\-*/%]", current)[-1]
+
+        # Jika angka terakhir sudah punya titik
+        if "." in last_number:
+            return
+            
     display.value += str(value)
 
 
