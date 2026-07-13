@@ -4,11 +4,17 @@ from js import window
 import re
 
 display = document.getElementById("display")
-OPERATORS = "+-*/%"
 
+OPERATORS = "+-*/%"
 
 def append(value):
     current = display.value
+
+    # Operator pertama
+    if value in OPERATORS:
+        if current == "":
+            display.value = "0" + value
+            return
 
     # Handle decimal point
     if value == ".":
@@ -29,7 +35,7 @@ def append(value):
         # Jika angka terakhir sudah punya titik
         if "." in last_number:
             return
-            
+
     display.value += str(value)
 
 
