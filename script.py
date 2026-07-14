@@ -121,7 +121,7 @@ def calculate():
 
     try:
         expression = expression.replace("%", "/100")
-        result = eval(expression)
+        result = float(f"{eval(expression):.12g}")
 
         # Hilangkan .0
         if isinstance(result, float) and result.is_integer():
