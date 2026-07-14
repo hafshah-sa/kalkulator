@@ -7,8 +7,19 @@ display = document.getElementById("display")
 
 OPERATORS = {"+", "-", "*", "/", "%"}
 ERROR_MESSAGES = ["Error", "Cannot divide by zero"]
+MAX_DIGITS = 16
+just_calculated = False
 
 def append(value):
+    global just_calculated
+
+    if just_calculated:
+        if value.isdigit() or value == ".":
+            display.value = ""
+            just_calculated = False
+        elif value in OPERATORS:
+            just_calculated = False
+
     # Jika display sedang menampilkan pesan error,
     # mulai input baru
     if display.value in ERROR_MESSAGES:
@@ -51,6 +62,12 @@ def append(value):
 
     # Hindari angka nol di depan (leading zero)
     if value.isdigit():
+        # Hitung jumlah digit (titik tidak dihitung)
+        digit_count = sum(c.isdigit() for c in last_number)
+
+        # Maksimum digit per angka
+        if digit_count >= MAX_DIGITS:
+            return
 
         # Kasus: display hanya berisi "0"
         if current == "0":
@@ -68,12 +85,22 @@ def append(value):
             return
 
     display.value += str(value)
+    global just_calculated
+    just_calculated = True
 
 def clear_display():
     display.value = ""
 
 def delete_last():
-    display.value = display.value[:-1]
+    if display.value in ERROR_MESSAGES:
+        display.value = "0"
+        return
+
+    if display.value:
+        display.value = display.value[:-1]
+
+    if display.value == "":
+        display.value = "0"
 
 def calculate():
     expression = display.value.strip()
