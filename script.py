@@ -75,7 +75,7 @@ def append(value):
     # Tambahkan karakter
     display.value += str(value)
     # Auto Scroll Display
-    display.scrollLeft = display.scrollWidth
+    # display.scrollLeft = display.scrollWidth
 
 def clear_display():
     display.value = ""
