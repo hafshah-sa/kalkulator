@@ -85,13 +85,18 @@ def append(value):
             return
 
     display.value += str(value)
-    global just_calculated
-    just_calculated = True
 
 def clear_display():
+    global just_calculated
+
     display.value = ""
+    just_calculated = False
 
 def delete_last():
+    global just_calculated
+    # User sudah mulai mengedit hasil
+    just_calculated = False
+    
     if display.value in ERROR_MESSAGES:
         display.value = "0"
         return
@@ -103,6 +108,7 @@ def delete_last():
         display.value = "0"
 
 def calculate():
+    global just_calculated
     expression = display.value.strip()
 
     # Jika kosong
@@ -122,6 +128,7 @@ def calculate():
             result = int(result)
 
         display.value = str(result)
+        just_calculated = True
 
     except ZeroDivisionError:
         display.value = "Cannot divide by zero"
