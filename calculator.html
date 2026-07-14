@@ -3,16 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Python Calculator</title>
-
-    <script type="module"
-            src="https://pyscript.net/releases/2025.3.1/core.js"></script>
-
     <link rel="stylesheet" href="style.css">
     <!-- PyScript -->
     <link rel="stylesheet"
           href="https://pyscript.net/releases/2025.3.1/core.css">
+    <script type="module"
+            src="https://pyscript.net/releases/2025.3.1/core.js"></script>
     <!-- Google Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,12 +27,9 @@
         <h2>Kalkulator Python</h2>
         <input
             type="text"
+            id="display"
             readonly
             placeholder="0">
-        <div class="display">
-            <div id="history"></div>
-            <input id="display">
-        </div>
         <div class="buttons">
             <button onclick="clear_display()">C</button>
             <button onclick="delete_last()">DEL</button>
@@ -71,6 +65,7 @@
 
 <!-- Memanggil file Python -->
 <py-script src="script.py"></py-script>
+<!-- <script type="py" src="script.py"></script> -->
 
 </body>
 </html>
