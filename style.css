@@ -23,6 +23,13 @@ body {
     align-items: center;
     background: rgba(255,255,255,0.08);
     backdrop-filter: blur(10px);
+    overflow-x:auto;
+    white-space:nowrap;
+    text-align:right;
+    scrollbar-width:none;
+}
+#display::-webkit-scrollbar{
+    display:none;
 }
 .logo {
     font-size: 22px;
