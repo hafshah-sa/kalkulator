@@ -10,78 +10,92 @@ ERROR_MESSAGES = ["Error", "Cannot divide by zero"]
 MAX_DIGITS = 16
 just_calculated = False
 
+def get_last_number(current):
+    """Mengambil angka terakhir setelah operator."""
+    return re.split(r"[+\-*/%]", current)[-1] if current else ""
+
+def handle_operator(current, value):
+    """Menangani input operator."""
+
+    if not current:
+        display.value = "0" + value
+        return True
+
+    if current[-1] in OPERATORS:
+        display.value = current[:-1] + value
+        return True
+
+    return False
+
+def handle_decimal(current, last_number):
+    """Menangani input titik desimal."""
+
+    if not current:
+        display.value = "0."
+        return True
+
+    if current[-1] in OPERATORS:
+        display.value += "0."
+        return True
+
+    if "." in last_number:
+        return True
+
+    return False
+
+def handle_digit(current, last_number, value):
+    """Menangani input angka."""
+
+    digit_count = sum(c.isdigit() for c in last_number)
+
+    if digit_count >= MAX_DIGITS:
+        return True
+
+    if current == "0":
+        display.value = value
+        return True
+
+    if last_number == "0":
+
+        last_operator = max(
+            current.rfind(op)
+            for op in OPERATORS
+        )
+
+        display.value = current[:last_operator + 1] + value
+        return True
+
+    return False
+
 def append(value):
     global just_calculated
 
+    # Setelah hasil "="
     if just_calculated:
         if value.isdigit() or value == ".":
             display.value = ""
-            just_calculated = False
-        elif value in OPERATORS:
-            just_calculated = False
+        just_calculated = False
 
-    # Jika display sedang menampilkan pesan error,
-    # mulai input baru
+    # Reset setelah error
     if display.value in ERROR_MESSAGES:
         display.value = ""
 
     current = display.value
+    last_number = get_last_number(current)
 
-    # Ambil angka terakhir sekali saja
-    last_number = re.split(r"[+\-*/%]", current)[-1] if current else ""
-
-    # Operator 
+    # Operator
     if value in OPERATORS:
-        # Jika operator pertama
-        if not current:
-            display.value = "0" + value
+        if handle_operator(current, value):
             return
 
-    # Jika karakter terakhir operator,
-        # ganti operator sebelumnya
-        if current[-1] in OPERATORS:
-            display.value = current[:-1] + value
+    # Decimal
+    elif value == ".":
+        if handle_decimal(current, last_number):
             return
 
-    # Handle decimal point
-    if value == ".":
-
-        # Jika display kosong
-        if not current:
-            display.value = "0."
-            return
-
-        # Jika karakter terakhir operator
-        if current[-1] in OPERATORS:
-            display.value += "0."
-            return
-
-        # Jika angka terakhir sudah punya titik
-        if "." in last_number:
-            return
-
-    # Hindari angka nol di depan (leading zero)
-    if value.isdigit():
-        # Hitung jumlah digit (titik tidak dihitung)
-        digit_count = sum(c.isdigit() for c in last_number)
-
-        # Maksimum digit per angka
-        if digit_count >= MAX_DIGITS:
-            return
-
-        # Kasus: display hanya berisi "0"
-        if current == "0":
-            display.value = value
-            return
-
-        # Kasus: angka terakhir setelah operator adalah "0"
-        if last_number == "0":
-
-            last_operator = max(
-                current.rfind(op) for op in OPERATORS
-            )
-
-            display.value = current[:last_operator + 1] + value
+    # Digit
+    elif value.isdigit():
+        if handle_digit(current, last_number, value):
             return
 
     display.value += str(value)
@@ -89,7 +103,7 @@ def append(value):
 def clear_display():
     global just_calculated
 
-    display.value = ""
+    display.value = "0"
     just_calculated = False
 
 def delete_last():
@@ -104,7 +118,7 @@ def delete_last():
     if display.value:
         display.value = display.value[:-1]
 
-    if display.value == "":
+    if not display.value:
         display.value = "0"
 
 def calculate():
@@ -112,7 +126,7 @@ def calculate():
     expression = display.value.strip()
 
     # Jika kosong
-    if expression == "":
+    if not expression:
         return
 
     # Jika karakter terakhir adalah operator
