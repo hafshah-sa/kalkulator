@@ -223,7 +223,11 @@ nav a:hover {
     font-weight:600;
     text-align:right;
     outline:none;
-    overflow:hidden;
+    overflow:auto;
+    scrollbar-width:none;
+}
+#display::-webkit-scrollbar{
+    display:none;
 }
 .icon-btn{
     position:absolute;

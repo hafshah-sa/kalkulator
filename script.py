@@ -4,25 +4,34 @@ from js import window, navigator
 import re
 
 display = document.getElementById("display")
+history = document.getElementById("history")
+copy_button = document.getElementById("copy-btn")
 
 OPERATORS = {"+", "-", "*", "/", "%"}
 ERROR_MESSAGES = ["Error", "Cannot divide by zero"]
 MAX_DIGITS = 16
+
 just_calculated = False
 
 def get_last_number(current):
     """Mengambil angka terakhir setelah operator."""
     return re.split(r"[+\-*/%]", current)[-1] if current else ""
 
+def refresh_display():
+    resize_display()
+    scroll_display()
+
 def handle_operator(current, value):
     """Menangani input operator."""
 
     if not current:
         display.value = "0" + value
+        refresh_display()
         return True
 
     if current[-1] in OPERATORS:
         display.value = current[:-1] + value
+        refresh_display()
         return True
 
     return False
@@ -32,10 +41,12 @@ def handle_decimal(current, last_number):
 
     if not current:
         display.value = "0."
+        refresh_display()
         return True
 
     if current[-1] in OPERATORS:
         display.value += "0."
+        refresh_display()
         return True
 
     if "." in last_number:
@@ -51,8 +62,10 @@ def handle_digit(current, last_number, value):
     if digit_count >= MAX_DIGITS:
         return True
 
+    # Hindari leading zero
     if current == "0":
         display.value = value
+        refresh_display()
         return True
 
     if last_number == "0":
@@ -63,6 +76,7 @@ def handle_digit(current, last_number, value):
         )
 
         display.value = current[:last_operator + 1] + value
+        refresh_display()
         return True
 
     return False
@@ -99,11 +113,13 @@ def append(value):
             return
 
     display.value += str(value)
+    refresh_display()
 
 def clear_display():
     global just_calculated
 
     display.value = "0"
+    refresh_display()
     just_calculated = False
 
 def delete_last():
@@ -113,6 +129,7 @@ def delete_last():
     
     if display.value in ERROR_MESSAGES:
         display.value = "0"
+        refresh_display()
         return
 
     if display.value:
@@ -120,6 +137,8 @@ def delete_last():
 
     if not display.value:
         display.value = "0"
+
+    refresh_display()
 
 def calculate():
     global just_calculated
@@ -133,22 +152,29 @@ def calculate():
     if expression[-1] in OPERATORS:
         return
 
-    try:
-        expression = expression.replace("%", "/100")
-        result = float(f"{eval(expression):.12g}")
+    update_history(
+        format_history(expression) + " ="
+    )
 
-        # Hilangkan .0
-        if isinstance(result, float) and result.is_integer():
+    eval_expression = expression.replace("%", "/100")
+
+    try:
+        result = float(f"{eval(eval_expression):.12g}")
+
+        if result.is_integer():
             result = int(result)
 
         display.value = str(result)
+        refresh_display()
         just_calculated = True
 
     except ZeroDivisionError:
         display.value = "Cannot divide by zero"
+        refresh_display()
 
     except Exception:
         display.value = "Error"
+        refresh_display()
 
 def copy_result():
     text = display.value.strip()
@@ -160,12 +186,12 @@ def copy_result():
         return
 
     navigator.clipboard.writeText(text)
-    button = document.getElementById("copy-btn")
-    button.innerText = "✓"
+
+    copy_button.innerText = "✓"
 
     window.setTimeout(
         create_proxy(
-            lambda: setattr(button,"innerText","📋")
+            lambda: setattr(copy_button,"innerText","📋")
         ),
         1000
     )
@@ -181,36 +207,78 @@ def handle_key(event):
         append(key)
         return
 
-    if key==".":
+    if key == ".":
         append(".")
         return
 
-    if key=="Enter":
+    if key == "Enter":
         event.preventDefault()
         calculate()
         return
 
-    if key=="Backspace":
+    if key == "Backspace":
         event.preventDefault()
         delete_last()
         return
 
-    if key=="Delete":
+    if key == "Delete":
         event.preventDefault()
         clear_display()
         return
 
-    if key=="Escape":
+    if key == "Escape":
         event.preventDefault()
         clear_display()
+
+def resize_display():
+    length = sum(
+        c.isdigit()
+        for c in display.value
+    )
+
+    if length <= 10:
+        size = "42px"
+
+    elif length <= 13:
+        size = "38px"
+
+    elif length <= 16:
+        size = "34px"
+
+    elif length <= 19:
+        size = "30px"
+
+    else:
+        size = "26px"
+
+    display.style.fontSize = size
+
+def scroll_display():
+    display.scrollLeft = display.scrollWidth
+
+def update_history(expression):
+    history.innerText = expression
+
+def format_history(expression):
+
+    return (
+        expression
+        .replace("*", " × ")
+        .replace("/", " ÷ ")
+        .replace("+", " + ")
+        .replace("-", " − ")
+        .replace("%", " % ")
+    )
 
 # ---------- expose ke JavaScript ----------
 window.append = create_proxy(append)
 window.clear_display = create_proxy(clear_display)
 window.delete_last = create_proxy(delete_last)
 window.calculate = create_proxy(calculate)
-window.copy_result=create_proxy(copy_result)
+window.copy_result = create_proxy(copy_result)
+handle_key_proxy = create_proxy(handle_key)
 document.addEventListener(
     "keydown",
-    create_proxy(handle_key)
+    handle_key_proxy
 )
+refresh_display()
