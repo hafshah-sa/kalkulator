@@ -9,7 +9,7 @@ copy_button = document.getElementById("copy-btn")
 
 OPERATORS = {"+", "-", "*", "/", "%"}
 ERROR_MESSAGES = ["Error", "Cannot divide by zero"]
-MAX_DIGITS = 16
+MAX_DIGITS = 14
 
 just_calculated = False
 
