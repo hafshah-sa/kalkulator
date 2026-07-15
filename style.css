@@ -175,29 +175,38 @@ nav a:hover {
     box-shadow:
     0 20px 50px rgba(0,0,0,.4);
 }
-
 .calculator h2 {
     text-align:center;
     margin-bottom:20px;
 }
-
 .display-wrapper{
     position:relative;
     display:flex;
     align-items:center;
 }
-
-#display {
-    width:100%;
-    padding:20px;
-    padding-right:55px;
-    font-size:25px;
+#history{
+    height:24px;
+    font-size:18px;
+    color:#94a3b8;
     text-align:right;
-    border:none;
-    border-radius:15px;
-    margin-bottom:20px;
-    background:#020617;
-    color:white;
+    overflow:hidden;
+    white-space:nowrap;
+    user-select:none;
+}
+.display-row{
+    display:flex;
+    align-items:center;
+    position:relative;
+}
+#display{
+    width:100%;
+    padding-right:56px;
+    text-align:right;
+    font-size:48px;
+    font-weight:600;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:clip;
 }
 .icon-btn{
     position:absolute;
@@ -208,6 +217,8 @@ nav a:hover {
     font-size:18px;
     opacity:.6;
     transition:.2s;
+    top:50%;
+    transform:translateY(-50%);
 }
 .icon-btn:hover{
     opacity:1;
