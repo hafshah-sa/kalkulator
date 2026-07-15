@@ -26,26 +26,22 @@
     <div class="calculator">
         <h2>Kalkulator Python</h2>
         <div class="display-wrapper">
-
-            <!-- Akan dipakai di Part 6 -->
             <div id="history"></div>
-            
-            <div class="display-row">
-                <input
-                    type="text"
-                    id="display"
-                    readonly
-                    value="0"
-                >
-                <button
-                    id="copy-btn"
-                    class="icon-btn"
-                    onclick="copy_result()"
-                    title="Copy Result">
-                    📋
-                </button>
-            </div>
+            <input
+                id="display"
+                type="text"
+                readonly
+                value="0">
         </div>
+        <div class="display-actions">
+            <button
+                id="copy-btn"
+                class="copy-btn"
+                onclick="copy_result()">
+                📋 Copy
+            </button>
+        </div>
+        
         <div class="buttons">
             <button onclick="clear_display()">C</button>
             <button onclick="delete_last()">DEL</button>
