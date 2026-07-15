@@ -181,9 +181,16 @@ nav a:hover {
     margin-bottom:20px;
 }
 
+.display-wrapper{
+    position:relative;
+    display:flex;
+    align-items:center;
+}
+
 #display {
     width:100%;
     padding:20px;
+    padding-right:55px;
     font-size:25px;
     text-align:right;
     border:none;
@@ -191,6 +198,19 @@ nav a:hover {
     margin-bottom:20px;
     background:#020617;
     color:white;
+}
+.icon-btn{
+    position:absolute;
+    right:10px;
+    border:none;
+    background:transparent;
+    cursor:pointer;
+    font-size:18px;
+    opacity:.6;
+    transition:.2s;
+}
+.icon-btn:hover{
+    opacity:1;
 }
 .buttons {
     display:grid;

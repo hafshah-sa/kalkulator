@@ -25,11 +25,20 @@
 <div class="calculator-container">
     <div class="calculator">
         <h2>Kalkulator Python</h2>
-        <input
-            type="text"
-            id="display"
-            readonly
-            placeholder="0">
+        <div class="display-wrapper">
+            <input
+                type="text"
+                id="display"
+                readonly
+                placeholder="0">
+            <button
+                id="copy-btn"
+                class="icon-btn"
+                onclick="copy_result()"
+                title="Copy Result">
+                📋
+            </button>
+        </div>
         <div class="buttons">
             <button onclick="clear_display()">C</button>
             <button onclick="delete_last()">DEL</button>

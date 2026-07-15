@@ -1,6 +1,6 @@
 from pyscript import document
 from pyscript.ffi import create_proxy
-from js import window
+from js import window, navigator
 import re
 
 display = document.getElementById("display")
@@ -150,8 +150,67 @@ def calculate():
     except Exception:
         display.value = "Error"
 
+def copy_result():
+    text = display.value.strip()
+
+    if not text:
+        return
+
+    if text in ERROR_MESSAGES:
+        return
+
+    navigator.clipboard.writeText(text)
+    button = document.getElementById("copy-btn")
+    button.innerText = "✓"
+
+    window.setTimeout(
+        create_proxy(
+            lambda: setattr(button,"innerText","📋")
+        ),
+        1000
+    )
+
+def handle_key(event):
+
+    key = event.key
+    if key.isdigit():
+        append(key)
+        return
+
+    if key in OPERATORS:
+        append(key)
+        return
+
+    if key==".":
+        append(".")
+        return
+
+    if key=="Enter":
+        event.preventDefault()
+        calculate()
+        return
+
+    if key=="Backspace":
+        event.preventDefault()
+        delete_last()
+        return
+
+    if key=="Delete":
+        event.preventDefault()
+        clear_display()
+        return
+
+    if key=="Escape":
+        event.preventDefault()
+        clear_display()
+
 # ---------- expose ke JavaScript ----------
 window.append = create_proxy(append)
 window.clear_display = create_proxy(clear_display)
 window.delete_last = create_proxy(delete_last)
 window.calculate = create_proxy(calculate)
+window.copy_result=create_proxy(copy_result)
+document.addEventListener(
+    "keydown",
+    create_proxy(handle_key)
+)
