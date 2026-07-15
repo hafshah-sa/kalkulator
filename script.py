@@ -161,14 +161,18 @@ def copy_result():
 
     navigator.clipboard.writeText(text)
     button = document.getElementById("copy-btn")
-    button.innerText = "✓"
+    button.textContent = "✓"
 
     window.setTimeout(
         create_proxy(
-            lambda: setattr(button,"innerText","📋")
+            lambda: setattr(button,"textContent","📋")
         ),
         1000
     )
+
+def reset_copy_icon():
+    button = document.getElementById("copy-btn")
+    button.textContent = "📋"
 
 def handle_key(event):
 
@@ -210,6 +214,11 @@ window.clear_display = create_proxy(clear_display)
 window.delete_last = create_proxy(delete_last)
 window.calculate = create_proxy(calculate)
 window.copy_result=create_proxy(copy_result)
+button.textContent = "✓"
+window.setTimeout(
+    create_proxy(reset_copy_icon),
+    1000
+)
 document.addEventListener(
     "keydown",
     create_proxy(handle_key)
